@@ -120,6 +120,10 @@ function randomdraw_supports(string $feature): ?bool {
  * Result: after N total draws the maximum deviation between any
  * two numbers is at most 1 – the theoretically best possible
  * distribution.
+ *
+ * @param int $randomdrawid
+ * @param int $userid
+ * @return int
  */
 function randomdraw_draw_number(int $randomdrawid, int $userid): int {
     global $DB;
@@ -269,6 +273,11 @@ function randomdraw_get_all_draws(int $randomdrawid): array {
 /**
  * Frequency map: number => total draws across all users.
  * Returns array indexed by number for the full [min,max] range.
+ *
+ * @param int $randomdrawid
+ * @param int $min
+ * @param int $max
+ * @return array
  */
 function randomdraw_get_frequency(int $randomdrawid, int $min, int $max): array {
     global $DB;
@@ -296,6 +305,9 @@ function randomdraw_get_frequency(int $randomdrawid, int $min, int $max): array 
 /**
  * Distribution quality: returns max deviation between any two numbers.
  * 0 = perfectly even, 1 = one number drawn once more than another, etc.
+ *
+ * @param array $freq
+ * @return int
  */
 function randomdraw_distribution_deviation(array $freq): int {
     if (empty($freq)) {
@@ -308,6 +320,11 @@ function randomdraw_distribution_deviation(array $freq): int {
  * Pool status: how many numbers are still in the "lowest tier"
  * (i.e., have the minimum draw count). This is what will be
  * drawn from next.
+ *
+ * @param int $randomdrawid
+ * @param int $min
+ * @param int $max
+ * @return array
  */
 function randomdraw_get_pool_status(int $randomdrawid, int $min, int $max): array {
     $freq  = randomdraw_get_frequency($randomdrawid, $min, $max);

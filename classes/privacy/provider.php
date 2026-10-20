@@ -46,6 +46,8 @@ class provider implements
     \core_privacy\local\request\plugin\provider {
     /**
      * Describe the personal data stored by this plugin.
+     * @param collection $collection
+     * @return collection
      */
     public static function get_metadata(collection $collection): collection {
         $collection->add_database_table(
@@ -62,6 +64,9 @@ class provider implements
 
     /**
      * Get the list of contexts that contain data for the given user.
+     *
+     * @param int $userid
+     * @return contextlist
      */
     public static function get_contexts_for_userid(int $userid): contextlist {
         $contextlist = new contextlist();
@@ -86,6 +91,8 @@ class provider implements
 
     /**
      * Get the list of users who have data in a given context.
+     *
+     * @param userlist $userlist
      */
     public static function get_users_in_context(userlist $userlist): void {
         $context = $userlist->get_context();
@@ -108,6 +115,8 @@ class provider implements
 
     /**
      * Export all user data for the approved contexts.
+     *
+     * @param approved_contextlist $contextlist
      */
     public static function export_user_data(approved_contextlist $contextlist): void {
         global $DB;
@@ -154,6 +163,8 @@ class provider implements
 
     /**
      * Delete all data for all users in a context.
+     *
+     * @param context $context
      */
     public static function delete_data_for_all_users_in_context(context $context): void {
         global $DB;
@@ -172,6 +183,8 @@ class provider implements
 
     /**
      * Delete data for a single user across the approved contexts.
+     *
+     * @param approved_contextlist $contextlist
      */
     public static function delete_data_for_user(approved_contextlist $contextlist): void {
         global $DB;
@@ -195,6 +208,8 @@ class provider implements
 
     /**
      * Delete data for multiple users in a single context.
+     *
+     * @param approved_userlist $userlist
      */
     public static function delete_data_for_users(approved_userlist $userlist): void {
         global $DB;

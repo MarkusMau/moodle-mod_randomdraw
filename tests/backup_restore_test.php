@@ -179,12 +179,12 @@ final class backup_restore_test extends advanced_testcase {
         $instance = $generator->create_module('randomdraw', ['course' => $course->id, 'range_max' => 4]);
         $cm = get_coursemodule_from_instance('randomdraw', $instance->id);
 
-        if (class_exists(\core_courseformat\local\cmactions::class)) {
+        if (method_exists(\core_courseformat\local\cmactions::class, 'duplicate')) {
             // Moodle 5.2 and later.
             $cmactions = new \core_courseformat\local\cmactions($course);
             $newcm = $cmactions->duplicate($cm->id);
         } else {
-            // Moodle 4.1 to 5.1.
+            // Moodle 4.1 to 5.1 (cmactions::duplicate() does not exist yet).
             $newcm = duplicate_module($course, $cm);
         }
         $this->assertNotNull($newcm);
