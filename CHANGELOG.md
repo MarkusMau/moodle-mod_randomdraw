@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1 (2026-11-17)
+
+- The view page and the activity list are now rendered with Mustache
+  templates and the Output API instead of echoing HTML from PHP.
+- Removed the redundant `$PAGE->requires->css()` call; Moodle already
+  includes the plugin's `styles.css` automatically.
+- The release ZIP now uses `randomdraw/` as its root folder.
+
 ## 1.0.0 (2026-10-20)
 
 First public release.

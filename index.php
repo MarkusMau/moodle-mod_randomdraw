@@ -47,13 +47,7 @@ if (empty($cms)) {
     );
 }
 
-echo '<table class="generaltable">';
-echo '<thead><tr>';
-echo '<th>' . get_string('activityname', 'mod_randomdraw') . '</th>';
-echo '<th>' . get_string('range', 'mod_randomdraw') . '</th>';
-echo '<th>' . get_string('totaldraws', 'mod_randomdraw') . '</th>';
-echo '</tr></thead><tbody>';
-
+$rows = [];
 foreach ($cms as $cm) {
     if (!$cm->uservisible) {
         continue;
@@ -62,16 +56,15 @@ foreach ($cms as $cm) {
     if (!$instance) {
         continue;
     }
-    $freq       = randomdraw_get_frequency($instance->id, $instance->range_min, $instance->range_max);
-    $totaldraws = array_sum($freq);
-
-    $url = new moodle_url('/mod/randomdraw/view.php', ['id' => $cm->id]);
-    echo '<tr>';
-    echo '<td><a href="' . $url . '">' . format_string($cm->name) . '</a></td>';
-    echo '<td>' . $instance->range_min . ' – ' . $instance->range_max . '</td>';
-    echo '<td>' . $totaldraws . '</td>';
-    echo '</tr>';
+    $freq = randomdraw_get_frequency($instance->id, $instance->range_min, $instance->range_max);
+    $rows[] = [
+        'name' => format_string($cm->name),
+        'url' => (new moodle_url('/mod/randomdraw/view.php', ['id' => $cm->id]))->out(false),
+        'range' => $instance->range_min . ' – ' . $instance->range_max,
+        'totaldraws' => array_sum($freq),
+    ];
 }
 
-echo '</tbody></table>';
+$page = new \mod_randomdraw\output\index_page($rows);
+echo $OUTPUT->render_from_template('mod_randomdraw/index', $page->export_for_template($OUTPUT));
 echo $OUTPUT->footer();
